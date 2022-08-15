@@ -5,10 +5,6 @@
 ## About
 User table generated from a fake api, with pagination and preferences popUp.
 
-## Functionalities
-
- + 
-
 # How to run this project
 If you want to run the project on your local machine, just follow the steps below:
 
