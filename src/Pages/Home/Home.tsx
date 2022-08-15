@@ -4,14 +4,16 @@ import { MdOutlineClose } from "react-icons/md";
 import { UserType, MenuConfigType } from "../../Types";
 import { useEffect, useState } from "react";
 import { api } from "../../service/api";
-import { Table, Tbody, User } from "./HomeStyle";
+import { Table, Tbody, Tfoot, User } from "./HomeStyle";
 import { MenuConfig } from "./Components/MenuConfig/MenuConfig";
 import Pagination from "@mui/material/Pagination";
+import { Loading } from "../../Components/Loading/Loading";
 
 const NORMAL_LIMIT = 20;
 const INCREASED_LIMITE = 50;
 
 export function Home() {
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState<UserType[]>([]);
   const [menuConfigInfo, setMenuConfigInfo] = useState<MenuConfigType>({
@@ -38,9 +40,14 @@ export function Home() {
   const PagesNumbers = Math.ceil(users.length / usersPerPage);
 
   useEffect(() => {
+    setLoading(true);
+
     api
       .get<UserType[]>(`/users`)
-      .then((response) => setUsers(response.data))
+      .then((response) => {
+        setUsers(response.data);
+        setLoading(false);
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -53,7 +60,7 @@ export function Home() {
 
   return (
     <>
-      <Table>
+      <Table isLoading={loading}>
         <thead>
           <tr>
             {columns.user && <th>USUÁRIO</th>}
@@ -64,6 +71,7 @@ export function Home() {
               <BsThreeDotsVertical
                 size={25}
                 className="icon"
+                data-testid="open-menu"
                 onClick={handleClickToggleMenuPreferences}
               />
               <MenuConfig
@@ -73,7 +81,15 @@ export function Home() {
             </th>
           </tr>
         </thead>
-        <Tbody>
+
+        <Tbody isLoading={loading}>
+          {loading && (
+            <tr className="loading">
+              <td>
+                <Loading />
+              </td>
+            </tr>
+          )}
           {currentPosts.map((user) => (
             <User key={user.id}>
               {columns.user && <td>{user.name}</td>}
@@ -91,12 +107,21 @@ export function Home() {
             </User>
           ))}
         </Tbody>
+        <Tfoot>
+          <tr>
+            <td colSpan={5}>
+              <Pagination
+                count={PagesNumbers}
+                shape="rounded"
+                onChange={(event, value) => {
+                  setCurrentPage(value);
+                  window.scrollTo(0, 0);
+                }}
+              />
+            </td>
+          </tr>
+        </Tfoot>
       </Table>
-      <Pagination
-        count={PagesNumbers}
-        shape="rounded"
-        onChange={(event, value) => setCurrentPage(value)}
-      />
     </>
   );
 }

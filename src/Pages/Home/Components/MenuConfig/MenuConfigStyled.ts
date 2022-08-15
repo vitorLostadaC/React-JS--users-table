@@ -46,9 +46,5 @@ export const Option = styled.div<OptionProps>`
       css`
         background-color: #33cccc;
       `}
-
-    &:hover {
-      background-color: #33cccc;
-    }
   }
 `;

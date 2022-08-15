@@ -10,7 +10,7 @@ interface Props {
 
 interface ColumnType {
   optionName: string;
-  checkedConditional: boolean;
+
   value: "user" | "email" | "client" | "enterprise";
 }
 
@@ -33,22 +33,18 @@ export function MenuConfig({ menuConfigInfo, setMenuConfigInfo }: Props) {
     {
       optionName: "Usuário",
       value: "user",
-      checkedConditional: menuConfigInfo.preferences.columns.user,
     },
     {
       optionName: "E-mail",
       value: "email",
-      checkedConditional: menuConfigInfo.preferences.columns.email,
     },
     {
       optionName: "Cliente",
       value: "client",
-      checkedConditional: menuConfigInfo.preferences.columns.client,
     },
     {
       optionName: "Perfil de acesso",
       value: "enterprise",
-      checkedConditional: menuConfigInfo.preferences.columns.enterprise,
     },
   ];
 
@@ -85,6 +81,7 @@ export function MenuConfig({ menuConfigInfo, setMenuConfigInfo }: Props) {
                 <BsCheckLg
                   size={10}
                   color="#fff"
+                  data-testid={`checkbox-${option.value}`}
                   onClick={() => handleToggleCheckboxLinePerPage(option.value)}
                 />
               </button>
@@ -98,11 +95,17 @@ export function MenuConfig({ menuConfigInfo, setMenuConfigInfo }: Props) {
         <header>Colunas</header>
         <div>
           {COLUMNS.map((option) => (
-            <Option key={option.value} checked={option.checkedConditional}>
+            <Option
+              key={option.value}
+              checked={
+                menuConfigInfo.preferences.columns[option.value] as boolean
+              }
+            >
               <button>
                 <BsCheckLg
                   size={10}
                   color="#fff"
+                  data-testid={`checkbox-${option.value}`}
                   onClick={() => handleToggleCheckboxColumns(option.value)}
                 />
               </button>
