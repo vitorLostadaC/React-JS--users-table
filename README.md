@@ -9,7 +9,7 @@ User table generated from a fake api, with pagination and preferences popUp.
 If you want to run the project on your local machine, just follow the steps below:
 
 ## ⚙ Pre-requiriments
-Before starting, you will need to have the following tools installed on your local machine project: Git, React.js, Next.js, Node.js our Yarn.
+Before starting, you will need to have the following tools installed on your local machine project: Git, React.js, Node.js our Yarn.
 
 ## 💻 Starting the project
 ```bash
